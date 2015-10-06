@@ -1,7 +1,6 @@
-fs-load
-========================
+fs-loader
 
-fs-load lets you dynamically require a directory in [webpack](http://webpack.github.io).
+fs-loader lets you dynamically require a directory in [webpack](http://webpack.github.io).
 
 This is based on [dir-loader](https://github.com/sleep/dir-loader) but has been adapted for use with fs-memory, an in memory representation of a filesystem.
 
@@ -15,7 +14,7 @@ This is based on [dir-loader](https://github.com/sleep/dir-loader) but has been 
 
 ## install
 ```
-npm install --save-dev fs-load
+npm install --save-dev fs-loader
 ```
 
 ## use
@@ -41,7 +40,7 @@ Suppose you have a webpack project with a semantic directory structure. You want
 └── entry.js
 ```
 
-In a js file, specify the configuration for fs-load:
+In a js file, specify the configuration for fs-loader:
 ```js
 // ./blog.config.js
 
@@ -335,7 +334,7 @@ Code [here](https://github.com/kmalakoff/fs-loader/tree/master/example).
 To run it:
 ```shell
 git clone https://github.com/kmalakoff/fs-loader
-cd fs-load
+cd fs-loader
 npm install
 npm run example
 ```
