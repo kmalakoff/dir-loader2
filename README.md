@@ -321,10 +321,15 @@ module.exports = {
   // Path to directory. Can be absolute or relative path.
   path: "./website",
 
-  // filter :: RegExp
+  // filter :: RegExp or Function
   // (optional)
   // Regular expression to test filenames.
   filter: /\.md$/,
+
+  // dirFilter :: RegExp or Function
+  // (optional)
+  // Regular expression to test directory names.
+  dirFilter: /^(?!__private__).*/
 }
 ```
 

@@ -11,6 +11,13 @@ var genReplacer = require('dir-loader/lib/util').genReplacer;
 var requirePlaceholder = genPlaceholder('require');
 var requireReplacer = genReplacer('require', function (str) { return "require(" + str + ")"; });
 
+function isSelected(filter, name, fullPath) {
+  if (!filter) return true;
+  if (_.isRegExp(filter)) return filter.test(name);
+  if (_.isFunction(filter)) return filter(name, fullPath);
+  return true;
+}
+
 function readFile(fullPath, options, stat) {
   var requirePath = options.pathTransform(urlToRequest(path.relative(options.webpackContext, fullPath)));
   var contents = requirePlaceholder(requirePath);
@@ -30,10 +37,18 @@ function readFile(fullPath, options, stat) {
 }
 
 function readDirectory(fullPath, options, stat) {
-  var children = fs.readdirSync(fullPath).filter(options.filter).map(function(filename) {
+  var children = [];
+  fs.readdirSync(fullPath).map(function(filename) {
     var childPath = path.join(fullPath, filename);
     var stat = fs.statSync(childPath);
-    return stat.isDirectory() ? readDirectory(childPath, options, stat) : readFile(childPath, options, stat);
+    if (stat.isDirectory()) {
+      if (!isSelected(options.dirFilter, filename, childPath)) return;
+      children.push(readDirectory(childPath, options, stat));
+    }
+    else {
+      if (!isSelected(options.filter, filename, childPath)) return;
+      children.push(readFile(childPath, options, stat));
+    }
   });
 
   var name = fullPath.split(path.sep).pop();
@@ -64,9 +79,6 @@ module.exports = function(source) {
 
   options.pathTransform = options.pathTransform || (function(_) {return _;});
   options.webpackContext = webpackContext;
-
-  var filter = options.filter;
-  options.filter = function(x) { return !filter || filter.test(x); }
 
   var fullPath = options.path;
   options.directory = fullPath.split(path.sep).pop();
