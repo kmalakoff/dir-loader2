@@ -1,0 +1,30 @@
+{
+  "name": "fs-loader",
+  "version": "0.1.0",
+  "description": "Loads a directory in weboack in a compatible form to fs-memory",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmalakoff/fs-loader.git"
+  },
+  "keywords": [
+    "fs",
+    "webpack",
+    "fs-memory",
+    "mock"
+  ],
+  "author": "https://github.com/kmalakoff",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kmalakoff/fs-loader/issues"
+  },
+  "homepage": "https://github.com/kmalakoff/fs-loader#readme",
+  "dependencies": {
+    "dir-loader": "^0.3.0",
+    "loader-utils": "^0.2.11",
+    "lodash": "^3.10.1"
+  }
+}
