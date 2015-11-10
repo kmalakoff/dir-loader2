@@ -18,6 +18,11 @@ function isSelected(filter, name, fullPath) {
   return true;
 }
 
+function serializeStat(stat) {
+  _.forEach(stat, function(value, key) { if (_.isDate(value)) stat[key] = value.getTime(); })
+  return stat;
+}
+
 function readFile(fullPath, options, stat) {
   var requirePath = options.pathTransform(urlToRequest(path.relative(options.webpackContext, fullPath)));
   var contents = requirePlaceholder(requirePath);
@@ -26,12 +31,8 @@ function readFile(fullPath, options, stat) {
   return {
     data: {
       name: name,
-      pathParts: _.compact([options.directory].concat(fullPath.slice(options.path.length+1).split(path.sep))),
       contents: contents,
-      stat: {
-        size: stat.size,
-        mtime:  stat.mtime
-      }
+      stat: serializeStat(stat)
     },
   };
 }
@@ -55,8 +56,8 @@ function readDirectory(fullPath, options, stat) {
   return {
     data: {
       name: name,
-      pathParts: _.compact([options.directory].concat(fullPath.slice(options.path.length+1).split(path.sep))),
-      isDirectory: true
+      isDirectory: true,
+      stat: serializeStat(stat)
     },
     children: children
   };
