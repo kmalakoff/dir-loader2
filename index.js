@@ -82,7 +82,7 @@ module.exports = function(source) {
 
   var fullPath = options.path;
   options.directory = fullPath.split(path.sep).pop();
-  var output = readDirectory(fullPath, options);
+  var output = readDirectory(fullPath, options, fs.statSync(fullPath));
   output = JSON.stringify(output, undefined, 2);
   output = requireReplacer(output);
 
