@@ -56,7 +56,6 @@ function readDirectory(fullPath, options, stat) {
   return {
     data: {
       name: name,
-      isDirectory: true,
       stat: serializeStat(stat)
     },
     children: children
