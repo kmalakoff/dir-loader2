@@ -12,11 +12,14 @@
   },
   "keywords": [
     "fs",
-    "webpack",
+    "memory",
     "fs-memory",
-    "mock"
+    "webpack",
+    "browser",
+    "mock",
+    "test"
   ],
-  "author": "https://github.com/kmalakoff",
+  "author": "Kevin Malakoff <kmalakoff@gmail.com> (https://github.com/kmalakoff)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kmalakoff/fs-loader/issues"
