@@ -1,6 +1,9 @@
 var fs = require('fs');
-var path = require('path');
-var _ = require('lodash');
+var sysPath = require('path');
+var forEach = require('lodash.foreach');
+var isDate = require('lodash.isdate');
+var isFunction = require('lodash.isfunction');
+var isRegEx = require('lodash.isregexp');
 
 var urlToRequest = require('loader-utils').urlToRequest;
 var parseQuery = require('loader-utils').parseQuery;
@@ -13,21 +16,21 @@ var requireReplacer = genReplacer('require', function (str) { return "require(" 
 
 function isSelected(filter, name, fullPath) {
   if (!filter) return true;
-  if (_.isRegExp(filter)) return filter.test(name);
-  if (_.isFunction(filter)) return filter(name, fullPath);
+  if (isRegExp(filter)) return filter.test(name);
+  if (isFunction(filter)) return filter(name, fullPath);
   return true;
 }
 
 function serializeStat(stat) {
-  _.forEach(stat, function(value, key) { if (_.isDate(value)) stat[key] = value.getTime(); })
+  forEach(stat, function(value, key) { if (isDate(value)) stat[key] = value.getTime(); })
   return stat;
 }
 
 function readFile(fullPath, options, stat) {
-  var requirePath = options.pathTransform(urlToRequest(path.relative(options.webpackContext, fullPath)));
+  var requirePath = options.pathTransform(urlToRequest(sysPath.relative(options.webpackContext, fullPath)));
   var contents = requirePlaceholder(requirePath);
 
-  var name = fullPath.split(path.sep).pop();
+  var name = fullPath.split(sysPath.sep).pop();
   return {
     data: {
       name: name,
@@ -40,7 +43,7 @@ function readFile(fullPath, options, stat) {
 function readDirectory(fullPath, options, stat) {
   var children = [];
   fs.readdirSync(fullPath).map(function(filename) {
-    var childPath = path.join(fullPath, filename);
+    var childPath = sysPath.join(fullPath, filename);
     var stat = fs.statSync(childPath);
     if (stat.isDirectory()) {
       if (!isSelected(options.dirFilter, filename, childPath)) return;
@@ -52,7 +55,7 @@ function readDirectory(fullPath, options, stat) {
     }
   });
 
-  var name = fullPath.split(path.sep).pop();
+  var name = fullPath.split(sysPath.sep).pop();
   return {
     data: {
       name: name,
@@ -68,7 +71,7 @@ module.exports = function(source) {
   var webpackContext = this.context;
 
   // check options
-  var required = ['path'];
+  var required = ['sysPath'];
   for (var i = 0; i < required.length; i++) {
     var k = required[i];
     if (!options[k]) throw new Error("The option " + k + " is required for fs-loader");
@@ -80,8 +83,8 @@ module.exports = function(source) {
   options.pathTransform = options.pathTransform || (function(_) {return _;});
   options.webpackContext = webpackContext;
 
-  var fullPath = options.path;
-  options.directory = fullPath.split(path.sep).pop();
+  var fullPath = options.sysPath;
+  options.directory = fullPath.split(sysPath.sep).pop();
   var output = readDirectory(fullPath, options, fs.statSync(fullPath));
   output = JSON.stringify(output, undefined, 2);
   output = requireReplacer(output);
