@@ -3,7 +3,7 @@ var sysPath = require('path');
 var forEach = require('lodash.foreach');
 var isDate = require('lodash.isdate');
 var isFunction = require('lodash.isfunction');
-var isRegEx = require('lodash.isregexp');
+var isRegExp = require('lodash.isregexp');
 
 var urlToRequest = require('loader-utils').urlToRequest;
 var parseQuery = require('loader-utils').parseQuery;
@@ -71,7 +71,7 @@ module.exports = function(source) {
   var webpackContext = this.context;
 
   // check options
-  var required = ['sysPath'];
+  var required = ['path'];
   for (var i = 0; i < required.length; i++) {
     var k = required[i];
     if (!options[k]) throw new Error("The option " + k + " is required for fs-loader");
@@ -83,7 +83,7 @@ module.exports = function(source) {
   options.pathTransform = options.pathTransform || (function(_) {return _;});
   options.webpackContext = webpackContext;
 
-  var fullPath = options.sysPath;
+  var fullPath = options.path;
   options.directory = fullPath.split(sysPath.sep).pop();
   var output = readDirectory(fullPath, options, fs.statSync(fullPath));
   output = JSON.stringify(output, undefined, 2);
