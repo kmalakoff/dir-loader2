@@ -28,9 +28,9 @@
   "dependencies": {
     "dir-loader": "^0.3.0",
     "loader-utils": "^0.2.11",
-    "lodash.foreach": "^3.0.3",
-    "lodash.isdate": "^3.0.1",
-    "lodash.isfunction": "^3.0.6",
-    "lodash.isregexp": "^3.0.3"
+    "lodash.foreach": "^4.0.0",
+    "lodash.isdate": "^4.0.0",
+    "lodash.isfunction": "^4.0.0",
+    "lodash.isregexp": "^4.0.0"
   }
 }
